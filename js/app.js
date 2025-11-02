@@ -1,6 +1,160 @@
 // DT Edu - Enhanced Interactive Features
 // Shared utility functions for all dashboards
 
+// Mobile Menu Manager
+class MobileMenuManager {
+    constructor() {
+        this.isOpen = false;
+        this.sidebar = null;
+        this.overlay = null;
+        this.hamburger = null;
+        this.init();
+    }
+
+    init() {
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.setup());
+        } else {
+            this.setup();
+        }
+    }
+
+    setup() {
+        this.sidebar = document.querySelector('.sidebar');
+        if (!this.sidebar) return;
+
+        // Only initialize on mobile/tablet
+        if (window.innerWidth <= 992) {
+            this.createMobileControls();
+        }
+
+        // Listen for window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 992) {
+                if (!this.hamburger) this.createMobileControls();
+            } else {
+                this.removeMobileControls();
+            }
+        });
+    }
+
+    createMobileControls() {
+        // Create hamburger button if it doesn't exist
+        if (!this.hamburger && document.querySelector('.main-content')) {
+            this.hamburger = document.createElement('button');
+            this.hamburger.className = 'mobile-menu-toggle';
+            this.hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+            this.hamburger.style.cssText = `
+                display: none;
+                position: fixed;
+                top: 15px;
+                z-index: 1001;
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                color: white;
+                border: none;
+                width: 45px;
+                height: 45px;
+                border-radius: 10px;
+                font-size: 20px;
+                cursor: pointer;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease;
+            `;
+
+            // Position based on RTL/LTR
+            if (document.body.classList.contains('rtl') || document.body.dir === 'rtl') {
+                this.hamburger.style.right = '15px';
+            } else {
+                this.hamburger.style.left = '15px';
+            }
+
+            this.hamburger.addEventListener('click', () => this.toggle());
+            document.body.appendChild(this.hamburger);
+
+            // Create overlay
+            this.overlay = document.createElement('div');
+            this.overlay.className = 'mobile-menu-overlay';
+            this.overlay.style.cssText = `
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 99;
+                transition: opacity 0.3s ease;
+            `;
+            this.overlay.addEventListener('click', () => this.close());
+            document.body.appendChild(this.overlay);
+        }
+
+        // Show hamburger on mobile
+        if (window.innerWidth <= 992 && this.hamburger) {
+            this.hamburger.style.display = 'flex';
+            this.hamburger.style.alignItems = 'center';
+            this.hamburger.style.justifyContent = 'center';
+
+            // Hide sidebar by default on mobile
+            if (this.sidebar) {
+                this.sidebar.style.transform = document.body.classList.contains('rtl') ? 
+                    'translateX(100%)' : 'translateX(-100%)';
+            }
+        }
+    }
+
+    removeMobileControls() {
+        if (this.hamburger) {
+            this.hamburger.style.display = 'none';
+        }
+        if (this.overlay) {
+            this.overlay.style.display = 'none';
+        }
+        if (this.sidebar) {
+            this.sidebar.style.transform = 'translateX(0)';
+        }
+        this.isOpen = false;
+    }
+
+    toggle() {
+        if (this.isOpen) {
+            this.close();
+        } else {
+            this.open();
+        }
+    }
+
+    open() {
+        this.isOpen = true;
+        if (this.sidebar) {
+            this.sidebar.style.transform = 'translateX(0)';
+        }
+        if (this.overlay) {
+            this.overlay.style.display = 'block';
+            setTimeout(() => this.overlay.style.opacity = '1', 10);
+        }
+        if (this.hamburger) {
+            this.hamburger.innerHTML = '<i class="fas fa-times"></i>';
+        }
+    }
+
+    close() {
+        this.isOpen = false;
+        if (this.sidebar) {
+            this.sidebar.style.transform = document.body.classList.contains('rtl') ? 
+                'translateX(100%)' : 'translateX(-100%)';
+        }
+        if (this.overlay) {
+            this.overlay.style.opacity = '0';
+            setTimeout(() => this.overlay.style.display = 'none', 300);
+        }
+        if (this.hamburger) {
+            this.hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+    }
+}
+
 // Enhanced Notification System
 class NotificationSystem {
     constructor() {
@@ -498,6 +652,171 @@ const enhanceAnimations = () => {
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
+        
+        /* Responsive Enhancements */
+        
+        /* Notification container responsive */
+        @media (max-width: 576px) {
+            #notification-container {
+                right: 10px !important;
+                left: 10px !important;
+                max-width: calc(100% - 20px) !important;
+            }
+        }
+        
+        /* Mobile menu styles */
+        .sidebar {
+            transition: transform 0.3s ease !important;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                position: fixed !important;
+                z-index: 100 !important;
+                height: 100vh !important;
+            }
+            
+            body.rtl .sidebar {
+                right: 0 !important;
+            }
+            
+            body.ltr .sidebar {
+                left: 0 !important;
+            }
+            
+            .main-content {
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                width: 100% !important;
+            }
+        }
+        
+        /* Touch-friendly buttons on mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .stat-card:hover, .dashboard-card:hover {
+                transform: none;
+            }
+            
+            .stat-card:active, .dashboard-card:active {
+                transform: scale(0.98);
+                opacity: 0.9;
+            }
+            
+            button, .btn, a.btn {
+                min-height: 44px;
+                padding: 12px 16px;
+            }
+        }
+        
+        /* Improve modal on mobile */
+        @media (max-width: 768px) {
+            .custom-modal {
+                padding: 10px !important;
+            }
+            
+            .custom-modal > div {
+                max-width: 100% !important;
+                max-height: 95vh !important;
+            }
+        }
+        
+        /* Better table responsiveness */
+        @media (max-width: 768px) {
+            table {
+                font-size: 14px;
+            }
+            
+            table th, table td {
+                padding: 10px 8px !important;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            table {
+                font-size: 13px;
+            }
+            
+            table th, table td {
+                padding: 8px 6px !important;
+            }
+        }
+        
+        /* Stats cards responsive grid */
+        .stats-cards {
+            display: grid;
+            gap: 20px;
+        }
+        
+        @media (min-width: 1200px) {
+            .stats-cards {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .stats-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .stats-cards {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+        
+        /* Dashboard grid responsive */
+        .dashboard-grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        @media (min-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            }
+        }
+        
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+        
+        /* Header responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px !important;
+            }
+            
+            .header h1 {
+                font-size: 20px !important;
+            }
+            
+            .header-actions {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+        }
+        
+        /* Form responsive improvements */
+        @media (max-width: 576px) {
+            .form-group {
+                margin-bottom: 15px;
+            }
+            
+            input, select, textarea {
+                font-size: 16px !important; /* Prevents zoom on iOS */
+            }
+        }
     `;
     document.head.appendChild(style);
 };
@@ -510,6 +829,7 @@ if (document.readyState === 'loading') {
 }
 
 // Global instances
+window.mobileMenu = new MobileMenuManager();
 window.notify = new NotificationSystem();
 window.loading = new LoadingOverlay();
 window.DataAnimator = DataAnimator;

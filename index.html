@@ -43,7 +43,8 @@
             background: linear-gradient(135deg, #1a2a6c, #4a6cf7, #00b894);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
             padding: 20px;
         }
@@ -144,6 +145,7 @@
             overflow: hidden;
             position: relative;
             animation: fadeIn 1s ease-out;
+            margin: auto;
         }
 
         @keyframes fadeIn {
@@ -485,42 +487,388 @@
             font-size: 14px;
         }
 
-        /* تصميم متجاوب */
+        /* تصميم متجاوب محسّن */
+        
+        /* Large tablets and small desktops */
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 950px;
+            }
+            
+            .welcome-section {
+                padding: 35px;
+            }
+            
+            .login-section {
+                padding: 40px 35px;
+            }
+        }
+        
+        /* Tablets */
         @media (max-width: 968px) {
             .container {
                 flex-direction: column;
-                max-width: 500px;
+                max-width: 600px;
             }
 
             .welcome-section {
-                padding: 30px 20px;
+                padding: 40px 25px;
+                min-height: auto;
+            }
+            
+            .logo-wrapper {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .logo {
+                width: 80px;
+                height: 80px;
             }
 
             .login-section {
+                padding: 40px 25px;
+            }
+
+            .user-type-selector {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            
+            .features {
+                gap: 15px;
+            }
+        }
+        
+        /* Mobile landscape and small tablets */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .container {
+                max-width: 100%;
+                border-radius: 15px;
+            }
+            
+            .welcome-section {
                 padding: 30px 20px;
+            }
+            
+            .welcome-section h1 {
+                font-size: 26px;
+                margin-bottom: 12px;
+            }
+            
+            .welcome-section p {
+                font-size: 16px;
+            }
+            
+            .logo-wrapper {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .logo {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .logo-text {
+                font-size: 26px;
+            }
+            
+            .features {
+                gap: 12px;
+                margin-top: 25px;
+            }
+            
+            .feature {
+                width: 140px;
+                padding: 12px;
+            }
+            
+            .feature i {
+                font-size: 22px;
+            }
+            
+            .login-section {
+                padding: 35px 20px;
+            }
+            
+            .login-header h2 {
+                font-size: 26px;
+            }
+            
+            .login-header p {
+                font-size: 15px;
+            }
+            
+            .language-toggle {
+                top: 15px;
+                right: 15px;
+                padding: 7px 12px;
+                font-size: 13px;
+            }
+        }
+        
+        /* Mobile portrait */
+        @media (max-width: 576px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 12px;
+            }
+            
+            .welcome-section {
+                padding: 25px 15px;
+            }
+            
+            .welcome-section h1 {
+                font-size: 22px;
+                margin-bottom: 10px;
+            }
+
+            .welcome-section p {
+                font-size: 15px;
+                line-height: 1.5;
+            }
+            
+            .logo-wrapper {
+                width: 90px;
+                height: 90px;
+                margin-bottom: 12px;
+            }
+            
+            .logo {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .logo-text {
+                font-size: 24px;
+            }
+            
+            .features {
+                gap: 10px;
+                margin-top: 20px;
+            }
+
+            .feature {
+                width: calc(50% - 5px);
+                padding: 10px 8px;
+                font-size: 13px;
+            }
+            
+            .feature i {
+                font-size: 20px;
+                margin-bottom: 8px;
+            }
+            
+            .login-section {
+                padding: 25px 15px;
+            }
+
+            .login-header h2 {
+                font-size: 22px;
+                margin-bottom: 8px;
+            }
+            
+            .login-header p {
+                font-size: 14px;
+            }
+            
+            .login-form {
+                gap: 18px;
+            }
+            
+            .form-group input {
+                padding: 13px 13px 13px 40px;
+                font-size: 15px;
+            }
+            
+            .input-icon {
+                left: 12px;
+                top: 40px;
+                font-size: 16px;
             }
 
             .user-type-selector {
                 grid-template-columns: 1fr;
+                gap: 10px;
+                margin: 12px 0;
+            }
+            
+            .user-type-option {
+                padding: 12px;
+                flex-direction: row;
+                justify-content: flex-start;
+                gap: 12px;
+            }
+            
+            .user-type-option i {
+                font-size: 22px;
+            }
+            
+            .user-type-option p {
+                font-size: 15px;
+                text-align: left;
+            }
+            
+            .login-button {
+                padding: 14px;
+                font-size: 16px;
+                gap: 8px;
+            }
+            
+            .additional-options {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+            
+            .remember-me {
+                justify-content: center;
+            }
+            
+            .language-toggle {
+                top: 12px;
+                right: 12px;
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            
+            .footer {
+                margin-top: 25px;
+                font-size: 13px;
             }
         }
-
-        @media (max-width: 480px) {
+        
+        /* Extra small devices */
+        @media (max-width: 400px) {
             .welcome-section h1 {
-                font-size: 24px;
+                font-size: 20px;
             }
-
+            
             .login-header h2 {
-                font-size: 24px;
+                font-size: 20px;
             }
-
-            .features {
-                gap: 10px;
+            
+            .logo-wrapper {
+                width: 80px;
+                height: 80px;
             }
-
+            
+            .logo {
+                width: 55px;
+                height: 55px;
+            }
+            
+            .logo-text {
+                font-size: 22px;
+            }
+            
             .feature {
-                width: 130px;
-                padding: 10px;
+                font-size: 12px;
+            }
+            
+            .feature i {
+                font-size: 18px;
+            }
+        }
+        
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .user-type-option,
+            .login-button,
+            .language-toggle,
+            .forgot-password {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            .form-group input {
+                min-height: 44px;
+            }
+            
+            .user-type-option:hover {
+                transform: none;
+            }
+            
+            .user-type-option:active {
+                transform: scale(0.98);
+                opacity: 0.9;
+            }
+            
+            .login-button:hover {
+                transform: none;
+            }
+            
+            .login-button:active {
+                transform: scale(0.98);
+            }
+        }
+        
+        /* Landscape orientation for mobile */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .container {
+                margin: 15px auto;
+            }
+            
+            .welcome-section {
+                padding: 20px 15px;
+            }
+            
+            .logo-wrapper {
+                width: 70px;
+                height: 70px;
+                margin-bottom: 8px;
+            }
+            
+            .logo {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .welcome-section h1 {
+                font-size: 20px;
+                margin-bottom: 8px;
+            }
+            
+            .welcome-section p {
+                font-size: 14px;
+            }
+            
+            .features {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+                margin-top: 15px;
+            }
+            
+            .feature {
+                width: 100%;
+                padding: 8px;
+                font-size: 11px;
+            }
+            
+            .feature i {
+                font-size: 16px;
+                margin-bottom: 5px;
+            }
+            
+            .login-section {
+                padding: 20px 15px;
+            }
+            
+            .login-header {
+                margin-bottom: 15px;
+            }
+            
+            .login-form {
+                gap: 12px;
             }
         }
     </style>
