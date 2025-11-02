@@ -796,27 +796,69 @@
 
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            
+            // Show loading
+            if (window.loading) {
+                window.loading.show(currentLanguage === 'ar' ? 'جاري تسجيل الدخول...' : 'Logging in...');
+            }
 
-            // التحقق من صحة بيانات تسجيل الدخول
-            const user = users.find(u => u.username === username && u.password === password);
+            // Simulate API call with timeout
+            setTimeout(() => {
+                // التحقق من صحة بيانات تسجيل الدخول
+                const user = users.find(u => u.username === username && u.password === password);
 
-            if (user) {
-                // التحقق من نوع المستخدم إذا تم تحديده
-                if (selectedUserType && user.type !== selectedUserType) {
-                    alert(currentLanguage === 'ar' ? 'نوع المستخدم غير صحيح' : 'User type is incorrect');
-                    return;
+                if (window.loading) {
+                    window.loading.hide();
                 }
 
-                // تخزين معلومات المستخدم في التخزين المحلي
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                localStorage.setItem('currentLanguage', currentLanguage);
+                if (user) {
+                    // التحقق من نوع المستخدم إذا تم تحديده
+                    if (selectedUserType && user.type !== selectedUserType) {
+                        if (window.notify) {
+                            window.notify.show(
+                                currentLanguage === 'ar' ? 'نوع المستخدم غير صحيح' : 'User type is incorrect',
+                                'error'
+                            );
+                        } else {
+                            alert(currentLanguage === 'ar' ? 'نوع المستخدم غير صحيح' : 'User type is incorrect');
+                        }
+                        return;
+                    }
 
-                // توجيه المستخدم إلى الصفحة المناسبة حسب نوعه
-                redirectToDashboard(user.type);
-            } else {
-                // عرض رسالة الخطأ
-                alert(currentLanguage === 'ar' ? 'اسم المستخدم أو كلمة المرور غير صحيحة' : 'Invalid username or password');
-            }
+                    // تخزين معلومات المستخدم في التخزين المحلي
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('currentLanguage', currentLanguage);
+                    
+                    // Show success notification
+                    if (window.notify) {
+                        window.notify.show(
+                            currentLanguage === 'ar' ? 'تم تسجيل الدخول بنجاح!' : 'Login successful!',
+                            'success',
+                            1500
+                        );
+                    }
+
+                    // توجيه المستخدم إلى الصفحة المناسبة حسب نوعه
+                    setTimeout(() => {
+                        redirectToDashboard(user.type);
+                    }, 1500);
+                } else {
+                    // عرض رسالة الخطأ
+                    if (window.notify) {
+                        window.notify.show(
+                            currentLanguage === 'ar' ? 'اسم المستخدم أو كلمة المرور غير صحيحة' : 'Invalid username or password',
+                            'error'
+                        );
+                    } else {
+                        alert(currentLanguage === 'ar' ? 'اسم المستخدم أو كلمة المرور غير صحيحة' : 'Invalid username or password');
+                    }
+                    
+                    // Shake the form
+                    const form = document.getElementById('login-form');
+                    form.classList.add('animate-shake');
+                    setTimeout(() => form.classList.remove('animate-shake'), 500);
+                }
+            }, 1000);
         });
 
         // توجيه المستخدم للصفحة المناسبة حسب نوعه
@@ -834,9 +876,8 @@
                     targetPage = 'admin-dashboard.html';
                     break;
                 case 'parent':
-                    // Parent dashboard not implemented yet, redirect to login with message
-                    alert(currentLanguage === 'ar' ? 'لوحة تحكم ولي الأمر غير متوفرة حالياً' : 'Parent dashboard not available yet');
-                    return;
+                    targetPage = 'parent-dashboard.html';
+                    break;
                 default:
                     targetPage = 'index.html';
             }
@@ -852,6 +893,7 @@
         document.querySelector('.user-type-option[data-type="student"]').classList.add('selected');
         selectedUserType = 'student';
     </script>
+    <script src="js/app.js"></script>
 </body>
 
 </html>

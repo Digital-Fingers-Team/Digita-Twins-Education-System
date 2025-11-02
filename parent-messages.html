@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الرسائل - DT Edu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4a6cf7;
+            --primary-dark: #3a56d4;
+            --secondary: #6c5ce7;
+            --accent: #00b894;
+            --light: #f8f9fa;
+            --dark: #2d3436;
+            --text: #333;
+            --text-light: #666;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+            --sidebar-width: 260px;
+        }
+
+        .dark-mode {
+            --light: #1a1a2e;
+            --dark: #f8f9fa;
+            --text: #e6e6e6;
+            --text-light: #b0b0b0;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f0f8ff 0%, #e1f0fa 100%);
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+        }
+
+        body.rtl { direction: rtl; }
+        body.ltr { direction: ltr; }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        body.rtl .sidebar { right: 0; }
+        body.ltr .sidebar { left: 0; }
+        body.rtl .main-content { margin-right: var(--sidebar-width); }
+        body.ltr .main-content { margin-left: var(--sidebar-width); margin-right: 0; }
+
+        .sidebar-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .logo svg { width: 50px; height: 50px; }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, white, #e1f0fa);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-info {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .user-name {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .user-type {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0 15px;
+        }
+
+        .menu-item {
+            margin-bottom: 8px;
+            border-radius: 10px;
+        }
+
+        .menu-item a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .menu-item a:hover,
+        .menu-item.active a {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        body.rtl .menu-item a:hover,
+        body.rtl .menu-item.active a { transform: translateX(-5px); }
+        body.ltr .menu-item a:hover,
+        body.ltr .menu-item.active a { transform: translateX(5px); }
+
+        .menu-item i {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        body.rtl .menu-item i { margin-left: 10px; }
+        body.ltr .menu-item i { margin-right: 10px; }
+
+        .sidebar-footer {
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .header {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .header h1 {
+            color: var(--primary);
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .dark-mode-toggle,
+        .logout-btn,
+        .compose-btn {
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dark-mode-toggle {
+            background: rgba(74, 108, 247, 0.1);
+            color: var(--primary);
+        }
+
+        .dark-mode-toggle:hover {
+            background: rgba(74, 108, 247, 0.2);
+        }
+
+        .compose-btn {
+            background: var(--primary);
+            color: white;
+        }
+
+        .compose-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .logout-btn {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+
+        .logout-btn:hover {
+            background: rgba(231, 76, 60, 0.2);
+        }
+
+        .messages-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        body.dark-mode .messages-container {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .message-item {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            gap: 15px;
+            align-items: start;
+        }
+
+        body.dark-mode .message-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .message-item:hover {
+            background: rgba(74, 108, 247, 0.05);
+        }
+
+        .message-item.unread {
+            background: rgba(74, 108, 247, 0.03);
+        }
+
+        .message-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .message-sender {
+            font-weight: 700;
+            color: var(--text);
+            font-size: 16px;
+        }
+
+        .message-time {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .message-subject {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+
+        .message-preview {
+            color: var(--text-light);
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-new { background: rgba(231, 76, 60, 0.1); color: #e74c3c; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+        }
+
+        body.dark-mode .modal-content {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        body.rtl .close-btn { left: 25px; }
+        body.ltr .close-btn { right: 25px; }
+
+        .modal-title {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 24px;
+        }
+
+        body.dark-mode .modal-title {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: var(--transition);
+            background-color: #f8f9fa;
+        }
+
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group textarea,
+        body.dark-mode .form-group select {
+            background-color: var(--light);
+            color: var(--dark);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 992px) {
+            .sidebar { width: 80px; }
+            .sidebar-header .logo-text,
+            .user-info,
+            .menu-item span { display: none; }
+            body.rtl .main-content { margin-right: 80px; }
+            body.ltr .main-content { margin-left: 80px; }
+            .menu-item a {
+                justify-content: center;
+                padding: 15px;
+            }
+            .menu-item i {
+                margin: 0;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .message-header {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .main-content { padding: 15px; }
+            .sidebar { width: 70px; }
+            body.rtl .main-content { margin-right: 70px; }
+            body.ltr .main-content { margin-left: 70px; }
+        }
+    </style>
+</head>
+<body class="rtl">
+    <div class="dashboard-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg width="50" height="50" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#4a6cf7"/>
+                                <stop offset="100%" stop-color="#00b894"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="48" cy="48" r="46" fill="url(#grad)" opacity="0.15" stroke="#4a6cf7" stroke-width="2"/>
+                        <path d="M28 62C28 48.745 38.745 38 52 38H60V46H52C43.163 46 36 53.163 36 62H28Z" fill="#4a6cf7"/>
+                        <path d="M40 58C40 44.745 50.745 34 64 34H72V42H64C55.163 42 48 49.163 48 58H40Z" fill="#00b894" opacity="0.85"/>
+                        <circle cx="60" cy="32" r="8" fill="#4a6cf7" opacity="0.75"/>
+                        <circle cx="36" cy="60" r="6" fill="#00b894" opacity="0.8"/>
+                    </svg>
+                </div>
+                <div class="logo-text">DT Edu</div>
+                <div class="user-info">
+                    <div class="user-name" id="user-name">ولي الأمر</div>
+                    <div class="user-type" id="user-type">Parent</div>
+                </div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="menu-item">
+                    <a href="parent-dashboard.html">
+                        <i class="fas fa-home"></i>
+                        <span id="menu-dashboard">لوحة التحكم</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="parent-children.html">
+                        <i class="fas fa-child"></i>
+                        <span id="menu-children">الأبناء</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="parent-attendance.html">
+                        <i class="fas fa-calendar-check"></i>
+                        <span id="menu-attendance">الحضور والغياب</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="parent-grades.html">
+                        <i class="fas fa-chart-line"></i>
+                        <span id="menu-grades">الدرجات والتقييمات</span>
+                    </a>
+                </li>
+                <li class="menu-item active">
+                    <a href="parent-messages.html">
+                        <i class="fas fa-comments"></i>
+                        <span id="menu-messages">الرسائل</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="parent-payments.html">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span id="menu-payments">المدفوعات</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="parent-settings.html">
+                        <i class="fas fa-cog"></i>
+                        <span id="menu-settings">الإعدادات</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <ul class="sidebar-menu">
+                    <li class="menu-item">
+                        <a href="#" id="sidebar-dark-mode-toggle">
+                            <i class="fas fa-moon"></i>
+                            <span id="dark-mode-text">الوضع الداكن</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" id="sidebar-language-toggle">
+                            <i class="fas fa-language"></i>
+                            <span id="language-text">English</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a href="index.html">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span id="logout-text">تسجيل الخروج</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1 id="page-title">الرسائل</h1>
+                <div class="header-actions">
+                    <button class="compose-btn" onclick="openComposeModal()">
+                        <i class="fas fa-edit"></i>
+                        <span id="compose-text">رسالة جديدة</span>
+                    </button>
+                    <button class="dark-mode-toggle" id="dark-mode-toggle">
+                        <i class="fas fa-moon"></i>
+                        <span id="header-dark-mode-text">الوضع الداكن</span>
+                    </button>
+                    <button class="logout-btn" onclick="window.location.href='index.html'">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span id="header-logout-text">تسجيل الخروج</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="messages-container">
+                <div class="message-item unread">
+                    <div class="message-avatar">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-sender">أ. محمد العلي</span>
+                            <span class="message-time">منذ ساعتين</span>
+                        </div>
+                        <div class="message-subject">تحسن ملحوظ في الأداء الأكاديمي</div>
+                        <div class="message-preview">أود أن أبلغكم بالتحسن الملحوظ في أداء ابنكم أحمد خلال الأسابيع الماضية...</div>
+                    </div>
+                    <span class="badge badge-new" id="badge-new">جديد</span>
+                </div>
+
+                <div class="message-item">
+                    <div class="message-avatar">
+                        <i class="fas fa-school"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-sender">إدارة المدرسة</span>
+                            <span class="message-time">منذ يوم</span>
+                        </div>
+                        <div class="message-subject">دعوة لاجتماع أولياء الأمور</div>
+                        <div class="message-preview">يسرنا دعوتكم لحضور اجتماع أولياء الأمور يوم الخميس القادم...</div>
+                    </div>
+                </div>
+
+                <div class="message-item">
+                    <div class="message-avatar">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="message-sender">أ. فاطمة الأحمد</span>
+                            <span class="message-time">منذ يومين</span>
+                        </div>
+                        <div class="message-subject">تقرير الأداء الشهري</div>
+                        <div class="message-preview">نرفق لكم التقرير الشهري لأداء ابنتكم فاطمة في مادة العلوم...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="composeModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeComposeModal()">&times;</span>
+            <h2 class="modal-title" id="modal-title">رسالة جديدة</h2>
+            <form onsubmit="event.preventDefault(); alert('تم إرسال الرسالة بنجاح!'); closeComposeModal();">
+                <div class="form-group">
+                    <label id="to-label">إلى:</label>
+                    <select>
+                        <option id="option-teacher">المعلم</option>
+                        <option id="option-admin">الإدارة</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label id="subject-label">الموضوع:</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label id="message-label">الرسالة:</label>
+                    <textarea required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-paper-plane"></i>
+                    <span id="send-btn-text">إرسال</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            ar: {
+                pageTitle: 'الرسائل',
+                userType: 'ولي أمر',
+                menuDashboard: 'لوحة التحكم',
+                menuChildren: 'الأبناء',
+                menuAttendance: 'الحضور والغياب',
+                menuGrades: 'الدرجات والتقييمات',
+                menuMessages: 'الرسائل',
+                menuPayments: 'المدفوعات',
+                menuSettings: 'الإعدادات',
+                darkModeText: 'الوضع الداكن',
+                languageText: 'English',
+                logoutText: 'تسجيل الخروج',
+                composeText: 'رسالة جديدة',
+                modalTitle: 'رسالة جديدة',
+                toLabel: 'إلى:',
+                subjectLabel: 'الموضوع:',
+                messageLabel: 'الرسالة:',
+                sendBtnText: 'إرسال',
+                optionTeacher: 'المعلم',
+                optionAdmin: 'الإدارة',
+                badgeNew: 'جديد'
+            },
+            en: {
+                pageTitle: 'Messages',
+                userType: 'Parent',
+                menuDashboard: 'Dashboard',
+                menuChildren: 'Children',
+                menuAttendance: 'Attendance',
+                menuGrades: 'Grades',
+                menuMessages: 'Messages',
+                menuPayments: 'Payments',
+                menuSettings: 'Settings',
+                darkModeText: 'Dark Mode',
+                languageText: 'العربية',
+                logoutText: 'Logout',
+                composeText: 'New Message',
+                modalTitle: 'New Message',
+                toLabel: 'To:',
+                subjectLabel: 'Subject:',
+                messageLabel: 'Message:',
+                sendBtnText: 'Send',
+                optionTeacher: 'Teacher',
+                optionAdmin: 'Administration',
+                badgeNew: 'New'
+            }
+        };
+
+        function updateLanguage(lang) {
+            const t = translations[lang];
+            document.getElementById('page-title').textContent = t.pageTitle;
+            document.getElementById('user-type').textContent = t.userType;
+            document.getElementById('menu-dashboard').textContent = t.menuDashboard;
+            document.getElementById('menu-children').textContent = t.menuChildren;
+            document.getElementById('menu-attendance').textContent = t.menuAttendance;
+            document.getElementById('menu-grades').textContent = t.menuGrades;
+            document.getElementById('menu-messages').textContent = t.menuMessages;
+            document.getElementById('menu-payments').textContent = t.menuPayments;
+            document.getElementById('menu-settings').textContent = t.menuSettings;
+            document.getElementById('dark-mode-text').textContent = t.darkModeText;
+            document.getElementById('header-dark-mode-text').textContent = t.darkModeText;
+            document.getElementById('language-text').textContent = t.languageText;
+            document.getElementById('logout-text').textContent = t.logoutText;
+            document.getElementById('header-logout-text').textContent = t.logoutText;
+            document.getElementById('compose-text').textContent = t.composeText;
+            document.getElementById('modal-title').textContent = t.modalTitle;
+            document.getElementById('to-label').textContent = t.toLabel;
+            document.getElementById('subject-label').textContent = t.subjectLabel;
+            document.getElementById('message-label').textContent = t.messageLabel;
+            document.getElementById('send-btn-text').textContent = t.sendBtnText;
+            document.getElementById('option-teacher').textContent = t.optionTeacher;
+            document.getElementById('option-admin').textContent = t.optionAdmin;
+            document.getElementById('badge-new').textContent = t.badgeNew;
+        }
+
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const sidebarDarkModeToggle = document.getElementById('sidebar-dark-mode-toggle');
+        
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+        sidebarDarkModeToggle.addEventListener('click', toggleDarkMode);
+
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+
+        const languageToggle = document.getElementById('sidebar-language-toggle');
+
+        languageToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isRTL = document.body.classList.contains('rtl');
+            if (isRTL) {
+                document.body.classList.remove('rtl');
+                document.body.classList.add('ltr');
+                document.documentElement.lang = 'en';
+                document.documentElement.dir = 'ltr';
+                updateLanguage('en');
+                localStorage.setItem('language', 'en');
+            } else {
+                document.body.classList.remove('ltr');
+                document.body.classList.add('rtl');
+                document.documentElement.lang = 'ar';
+                document.documentElement.dir = 'rtl';
+                updateLanguage('ar');
+                localStorage.setItem('language', 'ar');
+            }
+        });
+
+        if (localStorage.getItem('language') === 'en') {
+            document.body.classList.remove('rtl');
+            document.body.classList.add('ltr');
+            document.documentElement.lang = 'en';
+            document.documentElement.dir = 'ltr';
+            updateLanguage('en');
+        }
+
+        function openComposeModal() {
+            document.getElementById('composeModal').style.display = 'flex';
+        }
+
+        function closeComposeModal() {
+            document.getElementById('composeModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('composeModal');
+            if (event.target === modal) {
+                closeComposeModal();
+            }
+        }
+    </script>
+</body>
+</html>
