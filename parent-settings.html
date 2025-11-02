@@ -550,42 +550,12 @@
             </ul>
 
             <div class="sidebar-footer">
-                <ul class="sidebar-menu">
-                    <li class="menu-item">
-                        <a href="#" id="sidebar-dark-mode-toggle">
-                            <i class="fas fa-moon"></i>
-                            <span id="dark-mode-text">الوضع الداكن</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#" id="sidebar-language-toggle">
-                            <i class="fas fa-language"></i>
-                            <span id="language-text">English</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="index.html">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span id="logout-text">تسجيل الخروج</span>
-                        </a>
-                    </li>
-                </ul>
             </div>
         </div>
 
         <div class="main-content">
             <div class="header">
                 <h1 id="page-title">الإعدادات</h1>
-                <div class="header-actions">
-                    <button class="dark-mode-toggle" id="dark-mode-toggle">
-                        <i class="fas fa-moon"></i>
-                        <span id="header-dark-mode-text">الوضع الداكن</span>
-                    </button>
-                    <button class="logout-btn" onclick="window.location.href='index.html'">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span id="header-logout-text">تسجيل الخروج</span>
-                    </button>
-                </div>
             </div>
 
             <div class="settings-card">
@@ -615,8 +585,8 @@
 
             <div class="settings-card">
                 <h2 class="card-title">
-                    <i class="fas fa-language"></i>
-                    <span id="language-title">اللغة والعرض</span>
+                    <i class="fas fa-cog"></i>
+                    <span id="general-settings-title">الإعدادات العامة</span>
                 </h2>
                 <div class="switch-container">
                     <div>
@@ -627,6 +597,26 @@
                         <option value="ar">العربية</option>
                         <option value="en">English</option>
                     </select>
+                </div>
+                <div class="switch-container">
+                    <div>
+                        <div class="switch-label" id="dark-mode-setting">وضع العرض</div>
+                        <div class="switch-description" id="dark-mode-desc">تبديل بين الوضع الفاتح والوضع الداكن</div>
+                    </div>
+                    <button class="save-btn" id="dark-mode-toggle" style="padding: 10px 20px;">
+                        <i class="fas fa-moon"></i>
+                        <span id="dark-mode-text">الوضع الداكن</span>
+                    </button>
+                </div>
+                <div class="switch-container">
+                    <div>
+                        <div class="switch-label" id="logout-setting">تسجيل الخروج</div>
+                        <div class="switch-description" id="logout-desc">الخروج من حسابك الحالي</div>
+                    </div>
+                    <button class="cancel-btn" onclick="window.location.href='index.html'" style="padding: 10px 20px;">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span id="logout-text">تسجيل الخروج</span>
+                    </button>
                 </div>
             </div>
 
@@ -762,16 +752,19 @@
                 menuPayments: 'المدفوعات',
                 menuSettings: 'الإعدادات',
                 darkModeText: 'الوضع الداكن',
-                languageText: 'English',
                 logoutText: 'تسجيل الخروج',
+                generalSettingsTitle: 'الإعدادات العامة',
+                languageSetting: 'اللغة',
+                languageDesc: 'اختر اللغة المفضلة للوحة التحكم',
+                darkModeSetting: 'وضع العرض',
+                darkModeDesc: 'تبديل بين الوضع الفاتح والوضع الداكن',
+                logoutSetting: 'تسجيل الخروج',
+                logoutDesc: 'الخروج من حسابك الحالي',
                 profileTitle: 'المعلومات الشخصية',
                 nameLabel: 'الاسم الكامل',
                 emailLabel: 'البريد الإلكتروني',
                 phoneLabel: 'رقم الهاتف',
                 addressLabel: 'العنوان',
-                languageTitle: 'اللغة والعرض',
-                languageSetting: 'اللغة',
-                languageDesc: 'اختر اللغة المفضلة للوحة التحكم',
                 notificationsTitle: 'إعدادات الإشعارات',
                 emailNotifLabel: 'إشعارات البريد الإلكتروني',
                 emailNotifDesc: 'تلقي التحديثات عبر البريد الإلكتروني',
@@ -805,16 +798,19 @@
                 menuPayments: 'Payments',
                 menuSettings: 'Settings',
                 darkModeText: 'Dark Mode',
-                languageText: 'العربية',
                 logoutText: 'Logout',
+                generalSettingsTitle: 'General Settings',
+                languageSetting: 'Language',
+                languageDesc: 'Choose your preferred language for the dashboard',
+                darkModeSetting: 'Display Mode',
+                darkModeDesc: 'Toggle between light and dark mode',
+                logoutSetting: 'Logout',
+                logoutDesc: 'Sign out of your current account',
                 profileTitle: 'Personal Information',
                 nameLabel: 'Full Name',
                 emailLabel: 'Email Address',
                 phoneLabel: 'Phone Number',
                 addressLabel: 'Address',
-                languageTitle: 'Language & Display',
-                languageSetting: 'Language',
-                languageDesc: 'Choose your preferred language for the dashboard',
                 notificationsTitle: 'Notification Settings',
                 emailNotifLabel: 'Email Notifications',
                 emailNotifDesc: 'Receive updates via email',
@@ -850,18 +846,10 @@
             document.getElementById('menu-messages').textContent = t.menuMessages;
             document.getElementById('menu-payments').textContent = t.menuPayments;
             document.getElementById('menu-settings').textContent = t.menuSettings;
-            document.getElementById('dark-mode-text').textContent = t.darkModeText;
-            document.getElementById('header-dark-mode-text').textContent = t.darkModeText;
-            document.getElementById('language-text').textContent = t.languageText;
-            document.getElementById('logout-text').textContent = t.logoutText;
-            document.getElementById('header-logout-text').textContent = t.logoutText;
-            document.getElementById('profile-title').textContent = t.profileTitle;
-            document.getElementById('name-label').textContent = t.nameLabel;
-            document.getElementById('email-label').textContent = t.emailLabel;
-            document.getElementById('phone-label').textContent = t.phoneLabel;
-            document.getElementById('address-label').textContent = t.addressLabel;
-            if (document.getElementById('language-title')) {
-                document.getElementById('language-title').textContent = t.languageTitle;
+            
+            // Update general settings
+            if (document.getElementById('general-settings-title')) {
+                document.getElementById('general-settings-title').textContent = t.generalSettingsTitle;
             }
             if (document.getElementById('language-setting')) {
                 document.getElementById('language-setting').textContent = t.languageSetting;
@@ -869,6 +857,33 @@
             if (document.getElementById('language-desc')) {
                 document.getElementById('language-desc').textContent = t.languageDesc;
             }
+            if (document.getElementById('dark-mode-setting')) {
+                document.getElementById('dark-mode-setting').textContent = t.darkModeSetting;
+            }
+            if (document.getElementById('dark-mode-desc')) {
+                document.getElementById('dark-mode-desc').textContent = t.darkModeDesc;
+            }
+            if (document.getElementById('dark-mode-text')) {
+                const isDark = document.body.classList.contains('dark-mode');
+                document.getElementById('dark-mode-text').textContent = lang === 'ar' ? 
+                    (isDark ? 'الوضع الفاتح' : 'الوضع الداكن') : 
+                    (isDark ? 'Light Mode' : 'Dark Mode');
+            }
+            if (document.getElementById('logout-setting')) {
+                document.getElementById('logout-setting').textContent = t.logoutSetting;
+            }
+            if (document.getElementById('logout-desc')) {
+                document.getElementById('logout-desc').textContent = t.logoutDesc;
+            }
+            if (document.getElementById('logout-text')) {
+                document.getElementById('logout-text').textContent = t.logoutText;
+            }
+            
+            document.getElementById('profile-title').textContent = t.profileTitle;
+            document.getElementById('name-label').textContent = t.nameLabel;
+            document.getElementById('email-label').textContent = t.emailLabel;
+            document.getElementById('phone-label').textContent = t.phoneLabel;
+            document.getElementById('address-label').textContent = t.addressLabel;
             document.getElementById('notifications-title').textContent = t.notificationsTitle;
             document.getElementById('email-notif-label').textContent = t.emailNotifLabel;
             document.getElementById('email-notif-desc').textContent = t.emailNotifDesc;
@@ -903,48 +918,29 @@
         }
 
         const darkModeToggle = document.getElementById('dark-mode-toggle');
-        const sidebarDarkModeToggle = document.getElementById('sidebar-dark-mode-toggle');
         
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            // Update button text
+            const isDark = document.body.classList.contains('dark-mode');
+            const currentLang = localStorage.getItem('language') || 'ar';
+            if (darkModeToggle) {
+                const textSpan = darkModeToggle.querySelector('span');
+                if (textSpan) {
+                    textSpan.textContent = currentLang === 'ar' ? 
+                        (isDark ? 'الوضع الفاتح' : 'الوضع الداكن') : 
+                        (isDark ? 'Light Mode' : 'Dark Mode');
+                }
+            }
         }
 
-        darkModeToggle.addEventListener('click', toggleDarkMode);
-        sidebarDarkModeToggle.addEventListener('click', toggleDarkMode);
+        if (darkModeToggle) {
+            darkModeToggle.addEventListener('click', toggleDarkMode);
+        }
 
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark-mode');
-        }
-
-        const languageToggle = document.getElementById('sidebar-language-toggle');
-
-        languageToggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            const isRTL = document.body.classList.contains('rtl');
-            if (isRTL) {
-                document.body.classList.remove('rtl');
-                document.body.classList.add('ltr');
-                document.documentElement.lang = 'en';
-                document.documentElement.dir = 'ltr';
-                updateLanguage('en');
-                localStorage.setItem('language', 'en');
-            } else {
-                document.body.classList.remove('ltr');
-                document.body.classList.add('rtl');
-                document.documentElement.lang = 'ar';
-                document.documentElement.dir = 'rtl';
-                updateLanguage('ar');
-                localStorage.setItem('language', 'ar');
-            }
-        });
-
-        if (localStorage.getItem('language') === 'en') {
-            document.body.classList.remove('rtl');
-            document.body.classList.add('ltr');
-            document.documentElement.lang = 'en';
-            document.documentElement.dir = 'ltr';
-            updateLanguage('en');
         }
 
         function saveSettings() {

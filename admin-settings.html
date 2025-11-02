@@ -602,20 +602,6 @@
             </ul>
             
             <div class="sidebar-footer">
-                <ul class="sidebar-menu">
-                    <li class="menu-item">
-                        <a href="#" id="sidebar-dark-mode-toggle">
-                            <i class="fas fa-moon"></i>
-                            <span id="dark-mode-text">الوضع الداكن</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#" id="logout-link">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span id="logout-text">تسجيل الخروج</span>
-                        </a>
-                    </li>
-                </ul>
             </div>
         </div>
         
@@ -623,27 +609,17 @@
         <div class="main-content">
             <div class="header">
                 <h1 id="header-title">إعدادات النظام - لوحة تحكم المدير</h1>
-                <div class="header-actions">
-                    <button id="header-dark-mode-toggle" class="dark-mode-toggle">
-                        <i class="fas fa-moon"></i>
-                        <span id="dark-mode-btn-text">الوضع الداكن</span>
-                    </button>
-                    <button id="back-btn" class="back-btn" onclick="goBack()">
-                        <i class="fas fa-arrow-right"></i>
-                        <span id="back-text">العودة</span>
-                    </button>
-                </div>
             </div>
             
             <!-- إعدادات الصفحة -->
             <div class="settings-container">
-                <!-- إعدادات النظام الأساسية -->
+                <!-- الإعدادات العامة -->
                 <div class="settings-section">
-                    <h2 class="section-title" id="system-settings">إعدادات النظام الأساسية</h2>
+                    <h2 class="section-title" id="general-settings">الإعدادات العامة</h2>
                     <div class="settings-grid">
                         <div class="setting-item">
                             <div class="setting-info">
-                                <div class="setting-title" id="language-setting">لغة النظام</div>
+                                <div class="setting-title" id="language-setting">لغة النودام</div>
                                 <div class="setting-desc" id="language-desc">اختر اللغة الافتراضية للنظام</div>
                             </div>
                             <div class="setting-control">
@@ -654,6 +630,38 @@
                             </div>
                         </div>
                         
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title" id="dark-mode-setting">وضع العرض</div>
+                                <div class="setting-desc" id="dark-mode-desc">تبديل بين الوضع الفاتح والوضع الداكن</div>
+                            </div>
+                            <div class="setting-control">
+                                <button class="btn btn-primary" id="dark-mode-toggle-btn">
+                                    <i class="fas fa-moon"></i>
+                                    <span id="dark-mode-text">الوضع الداكن</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title" id="logout-setting">تسجيل الخروج</div>
+                                <div class="setting-desc" id="logout-desc">الخروج من حساب المدير</div>
+                            </div>
+                            <div class="setting-control">
+                                <button class="btn" style="background: rgba(231, 76, 60, 0.1); color: #e74c3c;" id="logout-btn">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span id="logout-text">تسجيل الخروج</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- إعدادات النظام الأساسية -->
+                <div class="settings-section">
+                    <h2 class="section-title" id="system-settings">إعدادات النظام الأساسية</h2>
+                    <div class="settings-grid">
                         <div class="setting-item">
                             <div class="setting-info">
                                 <div class="setting-title" id="notifications-setting">نظام الإشعارات</div>
@@ -909,8 +917,9 @@
         document.getElementById('semester-select').value = adminSettings.currentSemester;
         
         // إعداد زر الوضع الداكن
-        document.querySelectorAll('#header-dark-mode-toggle, #sidebar-dark-mode-toggle').forEach(btn => {
-            btn.addEventListener('click', function() {
+        const darkModeToggleBtn = document.getElementById('dark-mode-toggle-btn');
+        if (darkModeToggleBtn) {
+            darkModeToggleBtn.addEventListener('click', function() {
                 // تبديل الوضع الداكن
                 darkMode = !darkMode;
                 
@@ -927,14 +936,17 @@
                 // تحديث نص الزر
                 updateDarkModeText();
             });
-        });
+        }
         
         // إعداد زر تسجيل الخروج
-        document.getElementById('logout-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            localStorage.removeItem('currentUser');
-            window.location.href = 'index.html';
-        });
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            });
+        }
         
         // إعداد اختيار اللغة
         document.getElementById('language-select').addEventListener('change', function() {

@@ -931,26 +931,6 @@
             </ul>
 
             <div class="sidebar-footer">
-                <ul class="sidebar-menu">
-                    <li class="menu-item">
-                        <a href="#" id="sidebar-dark-mode-toggle">
-                            <i class="fas fa-moon"></i>
-                            <span id="dark-mode-text">الوضع الداكن</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#" id="sidebar-language-toggle">
-                            <i class="fas fa-language"></i>
-                            <span id="language-text">English</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="index.html">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span id="logout-text">تسجيل الخروج</span>
-                        </a>
-                    </li>
-                </ul>
             </div>
         </div>
 
@@ -958,16 +938,6 @@
         <div class="main-content">
             <div class="header">
                 <h1 id="page-title">لوحة تحكم ولي الأمر</h1>
-                <div class="header-actions">
-                    <button class="dark-mode-toggle" id="dark-mode-toggle">
-                        <i class="fas fa-moon"></i>
-                        <span id="header-dark-mode-text">الوضع الداكن</span>
-                    </button>
-                    <button class="logout-btn" onclick="window.location.href='index.html'">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span id="header-logout-text">تسجيل الخروج</span>
-                    </button>
-                </div>
             </div>
 
             <!-- اختيار الابن -->
@@ -1195,59 +1165,22 @@
     </div>
 
     <script>
-        // إدارة الوضع الداكن
-        const darkModeToggle = document.getElementById('dark-mode-toggle');
-        const sidebarDarkModeToggle = document.getElementById('sidebar-dark-mode-toggle');
-        
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            localStorage.setItem('darkMode', isDark);
-            updateDarkModeText(isDark);
-        }
-
-        function updateDarkModeText(isDark) {
-            const darkModeText = document.getElementById('dark-mode-text');
-            const headerDarkModeText = document.getElementById('header-dark-mode-text');
-            const currentLang = document.body.classList.contains('rtl') ? 'ar' : 'en';
-            if (isDark) {
-                darkModeText.textContent = currentLang === 'ar' ? 'الوضع الفاتح' : 'Light Mode';
-                headerDarkModeText.textContent = currentLang === 'ar' ? 'الوضع الفاتح' : 'Light Mode';
-            } else {
-                darkModeText.textContent = currentLang === 'ar' ? 'الوضع الداكن' : 'Dark Mode';
-                headerDarkModeText.textContent = currentLang === 'ar' ? 'الوضع الداكن' : 'Dark Mode';
-            }
-        }
-
-        darkModeToggle.addEventListener('click', toggleDarkMode);
-        sidebarDarkModeToggle.addEventListener('click', toggleDarkMode);
-
-        // تحميل إعدادات الوضع الداكن
+        // تحميل إعدادات الوضع الداكن من localStorage
         if (localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark-mode');
-            updateDarkModeText(true);
         }
 
-        // إدارة تبديل اللغة
-        const languageToggle = document.getElementById('sidebar-language-toggle');
-        const languageText = document.getElementById('language-text');
-
-        languageToggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            const isRTL = document.body.classList.contains('rtl');
-            if (isRTL) {
-                switchToEnglish();
-            } else {
-                switchToArabic();
-            }
-        });
+        // تحميل إعدادات اللغة من localStorage
+        const savedLanguage = localStorage.getItem('language');
+        if (savedLanguage === 'en') {
+            switchToEnglish();
+        }
 
         function switchToArabic() {
             document.body.classList.remove('ltr');
             document.body.classList.add('rtl');
             document.documentElement.lang = 'ar';
             document.documentElement.dir = 'rtl';
-            languageText.textContent = 'English';
             
             // تحديث النصوص
             document.getElementById('page-title').textContent = 'لوحة تحكم ولي الأمر';
@@ -1262,15 +1195,12 @@
             document.getElementById('menu-payments').textContent = 'المدفوعات';
             document.getElementById('menu-reports').textContent = 'التقارير';
             document.getElementById('menu-settings').textContent = 'الإعدادات';
-            document.getElementById('logout-text').textContent = 'تسجيل الخروج';
-            document.getElementById('header-logout-text').textContent = 'تسجيل الخروج';
             document.getElementById('select-child-title').textContent = 'اختر الابن/الابنة:';
             document.getElementById('attendance-label').textContent = 'نسبة الحضور';
             document.getElementById('avg-grade-label').textContent = 'المعدل العام';
             document.getElementById('subjects-label').textContent = 'المواد الدراسية';
             document.getElementById('alerts-label').textContent = 'التنبيهات';
             
-            updateDarkModeText(document.body.classList.contains('dark-mode'));
             localStorage.setItem('language', 'ar');
         }
 
@@ -1279,7 +1209,6 @@
             document.body.classList.add('ltr');
             document.documentElement.lang = 'en';
             document.documentElement.dir = 'ltr';
-            languageText.textContent = 'العربية';
             
             // تحديث النصوص
             document.getElementById('page-title').textContent = 'Parent Dashboard';
@@ -1294,21 +1223,13 @@
             document.getElementById('menu-payments').textContent = 'Payments';
             document.getElementById('menu-reports').textContent = 'Reports';
             document.getElementById('menu-settings').textContent = 'Settings';
-            document.getElementById('logout-text').textContent = 'Logout';
-            document.getElementById('header-logout-text').textContent = 'Logout';
             document.getElementById('select-child-title').textContent = 'Select Child:';
             document.getElementById('attendance-label').textContent = 'Attendance Rate';
             document.getElementById('avg-grade-label').textContent = 'Average Grade';
             document.getElementById('subjects-label').textContent = 'Subjects';
             document.getElementById('alerts-label').textContent = 'Alerts';
             
-            updateDarkModeText(document.body.classList.contains('dark-mode'));
             localStorage.setItem('language', 'en');
-        }
-
-        // تحميل إعدادات اللغة
-        if (localStorage.getItem('language') === 'en') {
-            switchToEnglish();
         }
 
         // إدارة تبويبات الأبناء
