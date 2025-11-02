@@ -420,6 +420,28 @@
             margin-top: 30px;
         }
 
+        .language-select {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background: white;
+            color: var(--text);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .language-select {
+            background: var(--light);
+            color: var(--dark);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .language-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
         @media (max-width: 992px) {
             .sidebar { width: 80px; }
             .sidebar-header .logo-text,
@@ -593,6 +615,23 @@
 
             <div class="settings-card">
                 <h2 class="card-title">
+                    <i class="fas fa-language"></i>
+                    <span id="language-title">اللغة والعرض</span>
+                </h2>
+                <div class="switch-container">
+                    <div>
+                        <div class="switch-label" id="language-setting">اللغة</div>
+                        <div class="switch-description" id="language-desc">اختر اللغة المفضلة للوحة التحكم</div>
+                    </div>
+                    <select class="language-select" id="language-select" style="padding: 10px 15px; border-radius: 8px; border: 1px solid #ddd; background: white; font-weight: 600; cursor: pointer;">
+                        <option value="ar">العربية</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <h2 class="card-title">
                     <i class="fas fa-bell"></i>
                     <span id="notifications-title">إعدادات الإشعارات</span>
                 </h2>
@@ -635,6 +674,40 @@
                         <input type="checkbox" checked>
                         <span class="slider"></span>
                     </label>
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <h2 class="card-title">
+                    <i class="fas fa-universal-access"></i>
+                    <span id="accessibility-title">إعدادات إمكانية الوصول</span>
+                </h2>
+                <div class="switch-container">
+                    <div>
+                        <div class="switch-label" id="high-contrast-label">التباين العالي</div>
+                        <div class="switch-description" id="high-contrast-desc">تحسين التباين للرؤية الأفضل</div>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="high-contrast-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="switch-container">
+                    <div>
+                        <div class="switch-label" id="font-size-label">حجم الخط</div>
+                        <div class="switch-description" id="font-size-desc">تعديل حجم الخط لسهولة القراءة</div>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="save-btn" onclick="decreaseFontSize()" style="padding: 8px 15px;">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button class="save-btn" onclick="resetFontSize()" style="padding: 8px 15px;">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                        <button class="save-btn" onclick="increaseFontSize()" style="padding: 8px 15px;">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -696,6 +769,9 @@
                 emailLabel: 'البريد الإلكتروني',
                 phoneLabel: 'رقم الهاتف',
                 addressLabel: 'العنوان',
+                languageTitle: 'اللغة والعرض',
+                languageSetting: 'اللغة',
+                languageDesc: 'اختر اللغة المفضلة للوحة التحكم',
                 notificationsTitle: 'إعدادات الإشعارات',
                 emailNotifLabel: 'إشعارات البريد الإلكتروني',
                 emailNotifDesc: 'تلقي التحديثات عبر البريد الإلكتروني',
@@ -705,6 +781,11 @@
                 gradesNotifDesc: 'إشعار عند نشر الدرجات الجديدة',
                 attendanceNotifLabel: 'إشعارات الحضور',
                 attendanceNotifDesc: 'إشعار عند الغياب أو التأخر',
+                accessibilityTitle: 'إعدادات إمكانية الوصول',
+                highContrastLabel: 'التباين العالي',
+                highContrastDesc: 'تحسين التباين للرؤية الأفضل',
+                fontSizeLabel: 'حجم الخط',
+                fontSizeDesc: 'تعديل حجم الخط لسهولة القراءة',
                 securityTitle: 'الأمان والخصوصية',
                 currentPasswordLabel: 'كلمة المرور الحالية',
                 newPasswordLabel: 'كلمة المرور الجديدة',
@@ -731,6 +812,9 @@
                 emailLabel: 'Email Address',
                 phoneLabel: 'Phone Number',
                 addressLabel: 'Address',
+                languageTitle: 'Language & Display',
+                languageSetting: 'Language',
+                languageDesc: 'Choose your preferred language for the dashboard',
                 notificationsTitle: 'Notification Settings',
                 emailNotifLabel: 'Email Notifications',
                 emailNotifDesc: 'Receive updates via email',
@@ -740,6 +824,11 @@
                 gradesNotifDesc: 'Notify when new grades are posted',
                 attendanceNotifLabel: 'Attendance Notifications',
                 attendanceNotifDesc: 'Notify on absence or tardiness',
+                accessibilityTitle: 'Accessibility Settings',
+                highContrastLabel: 'High Contrast',
+                highContrastDesc: 'Improve contrast for better visibility',
+                fontSizeLabel: 'Font Size',
+                fontSizeDesc: 'Adjust font size for easier reading',
                 securityTitle: 'Security & Privacy',
                 currentPasswordLabel: 'Current Password',
                 newPasswordLabel: 'New Password',
@@ -771,6 +860,15 @@
             document.getElementById('email-label').textContent = t.emailLabel;
             document.getElementById('phone-label').textContent = t.phoneLabel;
             document.getElementById('address-label').textContent = t.addressLabel;
+            if (document.getElementById('language-title')) {
+                document.getElementById('language-title').textContent = t.languageTitle;
+            }
+            if (document.getElementById('language-setting')) {
+                document.getElementById('language-setting').textContent = t.languageSetting;
+            }
+            if (document.getElementById('language-desc')) {
+                document.getElementById('language-desc').textContent = t.languageDesc;
+            }
             document.getElementById('notifications-title').textContent = t.notificationsTitle;
             document.getElementById('email-notif-label').textContent = t.emailNotifLabel;
             document.getElementById('email-notif-desc').textContent = t.emailNotifDesc;
@@ -780,6 +878,21 @@
             document.getElementById('grades-notif-desc').textContent = t.gradesNotifDesc;
             document.getElementById('attendance-notif-label').textContent = t.attendanceNotifLabel;
             document.getElementById('attendance-notif-desc').textContent = t.attendanceNotifDesc;
+            if (document.getElementById('accessibility-title')) {
+                document.getElementById('accessibility-title').textContent = t.accessibilityTitle;
+            }
+            if (document.getElementById('high-contrast-label')) {
+                document.getElementById('high-contrast-label').textContent = t.highContrastLabel;
+            }
+            if (document.getElementById('high-contrast-desc')) {
+                document.getElementById('high-contrast-desc').textContent = t.highContrastDesc;
+            }
+            if (document.getElementById('font-size-label')) {
+                document.getElementById('font-size-label').textContent = t.fontSizeLabel;
+            }
+            if (document.getElementById('font-size-desc')) {
+                document.getElementById('font-size-desc').textContent = t.fontSizeDesc;
+            }
             document.getElementById('security-title').textContent = t.securityTitle;
             document.getElementById('current-password-label').textContent = t.currentPasswordLabel;
             document.getElementById('new-password-label').textContent = t.newPasswordLabel;
@@ -846,6 +959,56 @@
 
         function changePassword() {
             alert('تم تغيير كلمة المرور بنجاح!');
+        }
+
+        // Accessibility functions
+        function increaseFontSize() {
+            const currentSize = parseInt(getComputedStyle(document.body).fontSize);
+            document.body.style.fontSize = (currentSize + 2) + 'px';
+            localStorage.setItem('fontSize', (currentSize + 2));
+        }
+
+        function decreaseFontSize() {
+            const currentSize = parseInt(getComputedStyle(document.body).fontSize);
+            document.body.style.fontSize = (currentSize - 2) + 'px';
+            localStorage.setItem('fontSize', (currentSize - 2));
+        }
+
+        function resetFontSize() {
+            document.body.style.fontSize = '16px';
+            localStorage.removeItem('fontSize');
+        }
+
+        // Load saved font size
+        const savedFontSize = localStorage.getItem('fontSize');
+        if (savedFontSize) {
+            document.body.style.fontSize = savedFontSize + 'px';
+        }
+
+        // High contrast toggle
+        const highContrastToggle = document.getElementById('high-contrast-toggle');
+        if (highContrastToggle) {
+            highContrastToggle.checked = localStorage.getItem('highContrast') === 'true';
+            highContrastToggle.addEventListener('change', function() {
+                if (window.HighContrastMode) {
+                    window.HighContrastMode.toggle();
+                }
+            });
+        }
+
+        // Language select handler
+        const languageSelect = document.getElementById('language-select');
+        if (languageSelect) {
+            languageSelect.value = localStorage.getItem('language') || 'ar';
+            languageSelect.addEventListener('change', function() {
+                const isRTL = this.value === 'ar';
+                document.body.classList.remove('rtl', 'ltr');
+                document.body.classList.add(isRTL ? 'rtl' : 'ltr');
+                document.documentElement.lang = this.value;
+                document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+                updateLanguage(this.value);
+                localStorage.setItem('language', this.value);
+            });
         }
     </script>
 </body>
