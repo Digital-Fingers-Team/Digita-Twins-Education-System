@@ -1415,13 +1415,37 @@
             });
         });
 
-        // إعداد زر تسجيل الخروج
-        document.getElementById('logout-link').addEventListener('click', function (e) {
-            e.preventDefault();
-            localStorage.removeItem('currentUser');
-            window.location.href = 'index.html';
+        // إعداد زر تغيير اللغة
+        document.getElementById('language-toggle').addEventListener('click', function() {
+            // تبديل اللغة
+            currentLanguage = currentLanguage === 'ar' ? 'en' : 'ar';
+            
+            // حفظ اللغة في التخزين المحلي
+            localStorage.setItem('currentLanguage', currentLanguage);
+            
+            // تحديث اتجاه الصفحة
+            document.body.className = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+            
+            // تحديث نص الزر
+            document.getElementById('language-toggle-text').textContent = currentLanguage === 'ar' ? 'English' : 'العربية';
+            
+            // تحديث جميع النصوص
+            updateLanguage();
+            
+            // تحديث نص زر الوضع الداكن
+            updateDarkModeText();
+            
+            // تحديث معلومات المستخدم
+            if (currentUser.name) {
+                document.getElementById('user-name').textContent = currentLanguage === 'ar' ? currentUser.name : (currentUser.nameEn || currentUser.name);
+            }
+            document.getElementById('user-type').textContent = currentLanguage === 'ar' ? 'طالب' : 'Student';
         });
 
+        // إعداد زر تسجيل الخروج
         document.getElementById('header-logout-btn').addEventListener('click', function () {
             localStorage.removeItem('currentUser');
             window.location.href = 'index.html';
@@ -1453,31 +1477,21 @@
                     // بطاقات الطالب
                     'student-homework-card': 'الواجبات المطلوبة',
                     'student-homework-desc': 'عرض الواجبات المطلوبة وتواريخ التسليم.',
-                    'student-homework-btn': 'عرض',
                     'student-courses-card': 'المواد الدراسية',
                     'student-courses-desc': 'الوصول إلى المواد الدراسية والموارد التعليمية.',
-                    'student-courses-btn': 'فتح',
                     'student-progress-card': 'التقدم الدراسي',
                     'student-progress-desc': 'متابعة التقدم الدراسي في جميع المواد.',
-                    'student-progress-btn': 'عرض',
                     'student-exams-card': 'الاختبارات',
                     'student-exams-desc': 'جدول الاختبارات والنتائج.',
-                    'student-exams-btn': 'عرض',
                     'student-classroom-card': 'الفصل الدراسي',
                     'student-classroom-desc': 'الانضمام إلى الفصل الدراسي التفاعلي.',
-                    'student-classroom-btn': 'الدخول',
                     'student-messaging-card': 'التواصل',
                     'student-messaging-desc': 'التواصل مع المعلمين والزملاء.',
-                    'student-messaging-btn': 'مراسلة',
 
                     // عناصر مشتركة
                     'classroom-title': 'الفصل الدراسي التفاعلي',
                     'classroom-desc': 'انضم إلى الفصل الدراسي التفاعلي للاستفادة من الدروس الحية والتفاعل المباشر مع المعلمين والزملاء.',
-                    'classroom-btn': 'الدخول إلى الفصل الدراسي',
-                    'logout-text': 'تسجيل الخروج',
                     'header-logout-text': 'تسجيل الخروج',
-                    'dark-mode-text': 'الوضع الداكن',
-                    'dark-mode-btn-text': 'الوضع الداكن',
 
                     // عناوين النوافذ المنبثقة
                     'homework-title': 'الواجبات المطلوبة',
@@ -1495,42 +1509,32 @@
                     'menu-messages': 'Messages',
                     'menu-settings': 'Settings',
 
-                    // إحصائيات الطالب
+                    // Student statistics
                     'student-progress-stat': 'Academic Progress',
                     'student-homework-stat': 'Completed Assignments',
                     'student-attendance-stat': 'Attendance Rate',
                     'student-achievements-stat': 'Achievements',
 
-                    // بطاقات الطالب
+                    // Student cards
                     'student-homework-card': 'Required Assignments',
                     'student-homework-desc': 'View required assignments and submission deadlines.',
-                    'student-homework-btn': 'View',
                     'student-courses-card': 'Courses',
-                    'student-courses-desc': 'Access to courses and educational resources.',
-                    'student-courses-btn': 'Open',
+                    'student-courses-desc': 'Access courses and educational resources.',
                     'student-progress-card': 'Academic Progress',
                     'student-progress-desc': 'Track academic progress in all subjects.',
-                    'student-progress-btn': 'View',
                     'student-exams-card': 'Exams',
                     'student-exams-desc': 'Exam schedule and results.',
-                    'student-exams-btn': 'View',
                     'student-classroom-card': 'Classroom',
                     'student-classroom-desc': 'Join the interactive classroom.',
-                    'student-classroom-btn': 'Enter',
                     'student-messaging-card': 'Communication',
                     'student-messaging-desc': 'Communicate with teachers and classmates.',
-                    'student-messaging-btn': 'Message',
 
-                    // عناصر مشتركة
+                    // Common elements
                     'classroom-title': 'Interactive Classroom',
                     'classroom-desc': 'Join the interactive classroom to benefit from live lessons and direct interaction with teachers and classmates.',
-                    'classroom-btn': 'Enter Classroom',
-                    'logout-text': 'Logout',
                     'header-logout-text': 'Logout',
-                    'dark-mode-text': 'Dark Mode',
-                    'dark-mode-btn-text': 'Dark Mode',
 
-                    // عناوين النوافذ المنبثقة
+                    // Modal titles
                     'homework-title': 'Required Assignments',
                     'courses-title': 'Courses',
                     'progress-title': 'Academic Progress',
@@ -1546,6 +1550,47 @@
                     element.textContent = translations[currentLanguage][key];
                 }
             });
+            
+            // تحديث نصوص الأزرار داخل البطاقات
+            updateButtonTexts();
+            
+            // تحديث نص زر الفصل الدراسي
+            const classroomBtnSpan = document.querySelector('#classroom-btn span');
+            if (classroomBtnSpan) {
+                classroomBtnSpan.textContent = currentLanguage === 'ar' ? 'الدخول إلى الفصل الدراسي' : 'Enter Classroom';
+            }
+        }
+        
+        // تحديث نصوص الأزرار
+        function updateButtonTexts() {
+            const buttonTexts = {
+                'ar': {
+                    'student-homework-btn': 'عرض',
+                    'student-courses-btn': 'فتح',
+                    'student-progress-btn': 'عرض',
+                    'student-exams-btn': 'عرض',
+                    'student-classroom-btn': 'الدخول',
+                    'student-messaging-btn': 'مراسلة'
+                },
+                'en': {
+                    'student-homework-btn': 'View',
+                    'student-courses-btn': 'Open',
+                    'student-progress-btn': 'View',
+                    'student-exams-btn': 'View',
+                    'student-classroom-btn': 'Enter',
+                    'student-messaging-btn': 'Message'
+                }
+            };
+            
+            Object.keys(buttonTexts[currentLanguage]).forEach(btnId => {
+                const button = document.getElementById(btnId);
+                if (button) {
+                    const span = button.querySelector('span');
+                    if (span) {
+                        span.textContent = buttonTexts[currentLanguage][btnId];
+                    }
+                }
+            });
         }
 
         // تحديث نص زر الوضع الداكن
@@ -1554,8 +1599,10 @@
                 ? (darkMode ? 'الوضع الفاتح' : 'الوضع الداكن')
                 : (darkMode ? 'Light Mode' : 'Dark Mode');
 
-            document.getElementById('dark-mode-text').textContent = darkModeText;
-            document.getElementById('dark-mode-btn-text').textContent = darkModeText;
+            const btnTextElement = document.getElementById('dark-mode-btn-text');
+            if (btnTextElement) {
+                btnTextElement.textContent = darkModeText;
+            }
 
             // تحديث الأيقونة
             const icons = document.querySelectorAll('#header-dark-mode-toggle i, #sidebar-dark-mode-toggle i');
@@ -1748,6 +1795,9 @@
         // تحديث اللغة والوضع الداكن عند تحميل الصفحة
         updateLanguage();
         updateDarkModeText();
+        
+        // تحديث نص زر تغيير اللغة
+        document.getElementById('language-toggle-text').textContent = currentLanguage === 'ar' ? 'English' : 'العربية';
     </script>
     <script src="js/app.js"></script>
     <script src="js/dashboard-enhancements.js"></script>
