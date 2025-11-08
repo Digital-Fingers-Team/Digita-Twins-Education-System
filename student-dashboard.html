@@ -1006,8 +1006,7 @@
                 </li>
             </ul>
 
-            <div class="sidebar-footer">
-            </div>
+
         </div>
 
         <!-- المحتوى الرئيسي -->
@@ -1384,6 +1383,7 @@
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
         // تحديث اتجاه الصفحة واللغة والوضع الداكن
+        document.documentElement.lang = currentLanguage;
         document.body.className = currentLanguage === 'ar' ? 'rtl' : 'ltr';
         if (darkMode) {
             document.body.classList.add('dark-mode');
@@ -1393,6 +1393,14 @@
         if (currentUser.name) {
             document.getElementById('user-name').textContent = currentLanguage === 'ar' ? currentUser.name : currentUser.nameEn;
         }
+        
+        // تطبيق اللغة على جميع عناصر الصفحة
+        updateLanguage();
+        updateDarkModeText();
+        
+        // تحديث نص زر تبديل اللغة
+        document.getElementById('language-toggle-text').textContent = currentLanguage === 'ar' ? 'English' : 'العربية';
+        document.getElementById('user-type').textContent = currentLanguage === 'ar' ? 'طالب' : 'Student';
 
         // إعداد زر الوضع الداكن
         document.querySelectorAll('#header-dark-mode-toggle, #sidebar-dark-mode-toggle').forEach(btn => {
@@ -1422,6 +1430,9 @@
             
             // حفظ اللغة في التخزين المحلي
             localStorage.setItem('currentLanguage', currentLanguage);
+            
+            // تحديث سمة lang في HTML
+            document.documentElement.lang = currentLanguage;
             
             // تحديث اتجاه الصفحة
             document.body.className = currentLanguage === 'ar' ? 'rtl' : 'ltr';

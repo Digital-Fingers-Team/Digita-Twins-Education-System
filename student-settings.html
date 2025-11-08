@@ -845,10 +845,17 @@
         };
         
         // تحديث اتجاه الصفحة واللغة والوضع الداكن
+        document.documentElement.lang = currentLanguage;
         document.body.className = currentLanguage === 'ar' ? 'rtl' : 'ltr';
         if (darkMode) {
             document.body.classList.add('dark-mode');
         }
+        
+        // تطبيق اللغة على جميع عناصر الصفحة
+        updateLanguage();
+        updateDarkModeText();
+        updateSidebarPosition();
+        updateBackButton();
         
         // تحديث اختيار اللغة
         document.getElementById('language-select').value = currentLanguage;
@@ -897,11 +904,20 @@
         
         // إعداد اختيار اللغة
         document.getElementById('language-select').addEventListener('change', function() {
-            currentLanguage = this.value;
-            localStorage.setItem('currentLanguage', currentLanguage);
+            const newLanguage = this.value;
+            
+            // حفظ اللغة الجديدة في التخزين المحلي
+            localStorage.setItem('currentLanguage', newLanguage);
+            currentLanguage = newLanguage;
+            
+            // تحديث سمة lang في HTML
+            document.documentElement.lang = currentLanguage;
             
             // تحديث اتجاه الصفحة
             document.body.className = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
             
             // تحديث النصوص
             updateLanguage();

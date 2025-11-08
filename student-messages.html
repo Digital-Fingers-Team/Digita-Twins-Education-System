@@ -768,22 +768,7 @@
                 </li>
             </ul>
             
-            <div class="sidebar-footer">
-                <ul class="sidebar-menu">
-                    <li class="menu-item">
-                        <a href="#" id="dark-mode-toggle-sidebar">
-                            <i class="fas fa-moon"></i>
-                            <span id="dark-mode-text">الوضع الداكن</span>
-                        </a>
-                    </li>
-                    <li class="menu-item">
-                        <a href="#" id="logout-link">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span id="logout-text">تسجيل الخروج</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+
         </div>
         
         <!-- المحتوى الرئيسي -->
@@ -888,10 +873,15 @@
         let darkMode = localStorage.getItem('darkMode') === 'true';
         
         // تحديث اتجاه الصفحة واللغة والوضع الداكن
+        document.documentElement.lang = currentLanguage;
         document.body.className = currentLanguage === 'ar' ? 'rtl' : 'ltr';
         if (darkMode) {
             document.body.classList.add('dark-mode');
         }
+        
+        // تطبيق اللغة على جميع عناصر الصفحة
+        updateLanguage();
+        updateDarkModeText();
         
         // إعداد زر الوضع الداكن
         document.querySelectorAll('#dark-mode-toggle, #dark-mode-toggle-sidebar').forEach(btn => {
