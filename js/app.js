@@ -1,3 +1,4 @@
+// the following is the completed code for DTES/js/app.js:
 // DT Edu - Enhanced Interactive Features
 // Shared utility functions for all dashboards
 

@@ -1,3 +1,4 @@
+// the following is the completed code for DTES/js/dashboard-enhancements.js:
 // Dashboard Interactive Enhancements
 // Real-time updates, notifications, and interactive features
 
