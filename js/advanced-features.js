@@ -1,3 +1,4 @@
+// the following is the completed code for DTES/js/advanced-features.js:
 // Advanced Dashboard Features
 // Enhanced functionality for improved user experience
 
@@ -722,7 +723,7 @@ function addExportButtons() {
         exportBtn.innerHTML = `<i class="fas fa-download"></i> ${isRTL ? 'تصدير الإحصائيات' : 'Export Stats'}`;
         exportBtn.style.cssText = `
             position: absolute;
-            top: -50px;
+            top: -76px;
             right: 20px;
             background: var(--primary);
             color: white;
